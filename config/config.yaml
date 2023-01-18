@@ -1,1 +1,24 @@
-port: :8088
+server:
+  port: :8088
+  name: TikTokApp
+mysql:
+  host: sh-cynosdbmysql-grp-iz8i4iaa.sql.tencentcdb.com
+  port: 24165
+  username: blog
+  pwd: Mzf200314!
+  database: go_blog
+  charset: utf8
+  maxIdle: 10
+  maxOpen: 100
+
+redis:
+  address: localhost:6379
+  DB: 0
+  poolSize: 20
+
+log:
+  level: 'info'
+  filename: './log.log'
+  maxSize:  200
+  maxAge: 7
+  maxBackups: 10
