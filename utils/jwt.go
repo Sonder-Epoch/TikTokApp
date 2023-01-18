@@ -21,7 +21,7 @@ func GenToken(username string) (string, error) {
 		username, // 自定义字段
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(TokenExpireDuration)),
-			Issuer:    "my-project", // 签发人
+			Issuer:    "永雏塔菲", // 签发人
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
