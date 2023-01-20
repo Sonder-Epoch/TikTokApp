@@ -16,10 +16,10 @@ func InitDB() {
 	pwd := mysqlConfig.Pwd
 	database := mysqlConfig.Database
 	charset := mysqlConfig.Charset
-	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset%s&parseTime=true",
-		username, pwd, host, port, database, charset)
+	level := mysqlConfig.LogLevel
+	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset%s&parseTime=true", username, pwd, host, port, database, charset)
 	db, err := gorm.Open(mysql.Open(url), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logger.LogLevel(level)),
 	})
 	if err != nil {
 		panic("数据库连接失败" + err.Error())

@@ -4,10 +4,11 @@ server:
 mysql:
   host: sh-cynosdbmysql-grp-iz8i4iaa.sql.tencentcdb.com
   port: 24165
-  username: blog
-  pwd: Mzf200314!
-  database: go_blog
+  username: TikTok
+  pwd: tiktok111!
+  database: TikTok
   charset: utf8
+  logLevel: 4   #  1-4:Silent-Info
   maxIdle: 10
   maxOpen: 100
 
@@ -17,8 +18,14 @@ redis:
   poolSize: 20
 
 log:
-  level: 'info'
+  level: 'debug'
   filename: './log.log'
   maxSize:  200
   maxAge: 7
   maxBackups: 10
+
+oss:
+  endpoint: oss-cn-chengdu.aliyuncs.com
+  accessKeyId: LTAI5t9V1YA6L9DGsje5UpX1
+  accessKeySecret: EguNJqLUPGJ78lLmJhyPB9gzu8oawU
+  bucketName: tik-tok-app

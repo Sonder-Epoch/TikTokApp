@@ -4,16 +4,12 @@ import (
 	"TikTokApp/config"
 	"TikTokApp/dao"
 	"TikTokApp/logger"
-	"github.com/gin-gonic/gin"
+	"TikTokApp/utils"
 )
 
 func main() {
-
-	server := gin.New()
-	server.Use(logger.GinLogger(), logger.GinRecovery(true))
-	setUpRouter(server)
-	err := server.Run(config.Conf.Server.Port)
-	if err != nil {
+	server := setUpRouter()
+	if err := server.Run(config.Conf.Server.Port); err != nil {
 		panic(err)
 	}
 }
@@ -21,4 +17,5 @@ func init() {
 	dao.InitDB()
 	dao.InitRedis()
 	logger.InitLogger()
+	utils.InitOSS()
 }

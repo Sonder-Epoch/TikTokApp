@@ -10,6 +10,7 @@ type Config struct {
 	Mysql  MysqlConfig  `yaml:"mysql"`
 	Redis  RedisConfig  `yaml:"redis"`
 	Log    LogConfig    `yaml:"log"`
+	OSS    OSSConfig    `yaml:"oss"`
 }
 type ServerConfig struct {
 	Port string `yaml:"port"`
@@ -22,6 +23,7 @@ type MysqlConfig struct {
 	Pwd      string `yaml:"pwd"`
 	Database string `yaml:"database"`
 	Charset  string `yaml:"charset"`
+	LogLevel int    `yaml:"logLevel"`
 	MaxIdle  int    `yaml:"maxIdle"`
 	MaxOpen  int    `yaml:"maxOpen"`
 }
@@ -37,6 +39,14 @@ type LogConfig struct {
 	MaxAge     int    `json:"maxAge"`
 	MaxBackups int    `json:"maxBackups"`
 }
+type OSSConfig struct {
+	Endpoint        string `yaml:"endpoint"`
+	AccessKeyId     string `yaml:"accessKeyId"`
+	AccessKeySecret string `yaml:"accessKeySecret"`
+	BucketName      string `yaml:"bucketName"`
+}
+
+var Conf = initConfig()
 
 func initConfig() *Config {
 	conf := new(Config)
@@ -53,5 +63,3 @@ func initConfig() *Config {
 	}
 	return conf
 }
-
-var Conf = initConfig()

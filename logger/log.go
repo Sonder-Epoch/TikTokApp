@@ -6,6 +6,7 @@ import (
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"io"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -51,7 +52,8 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.Write
 		MaxBackups: maxBackup,
 		MaxAge:     maxAge,
 	}
-	return zapcore.AddSync(lumberJackLogger)
+	multiWriter := io.MultiWriter(lumberJackLogger, os.Stdout)
+	return zapcore.AddSync(multiWriter)
 }
 
 // GinLogger 接收gin框架默认的日志

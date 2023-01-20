@@ -11,17 +11,19 @@ type CustomClaims struct {
 	jwt.RegisteredClaims
 }
 
+// TokenExpireDuration token过期时间
 const TokenExpireDuration = time.Hour * 24
 
+// CustomSecret 加密盐
 var CustomSecret = []byte("关注永雏塔菲喵")
 
 // GenToken 生成JWT
 func GenToken(username string) (string, error) {
 	claims := CustomClaims{
-		username, // 自定义字段
+		username,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(TokenExpireDuration)),
-			Issuer:    "永雏塔菲", // 签发人
+			Issuer:    "永雏塔菲",
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -37,7 +39,7 @@ func ParseToken(tokenString string) (*CustomClaims, error) {
 	if err != nil {
 		return nil, err
 	}
-	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid { // 校验token
+	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		return claims, nil
 	}
 	return nil, errors.New("invalid token")

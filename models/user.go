@@ -2,6 +2,7 @@ package models
 
 import (
 	"TikTokApp/dao"
+	"go.uber.org/zap"
 	"sync"
 	"time"
 )
@@ -31,5 +32,6 @@ func NewUserDaoInstance() *UserDao {
 }
 func (*UserDao) CreateUser(user *User) {
 	if err := dao.DB.Create(user).Error; err != nil {
+		zap.L().Sugar().Errorf("创建user失败user")
 	}
 }
