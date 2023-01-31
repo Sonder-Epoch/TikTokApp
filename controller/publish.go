@@ -2,6 +2,7 @@ package controller
 
 import (
 	"TikTokApp/service"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -15,4 +16,8 @@ func Publish(c *gin.Context) {
 	title := c.PostForm("title")
 	service.Publish(title, file)
 	c.JSON(200, gin.H{})
+}
+
+func PublishList(c *gin.Context) {
+
 }
