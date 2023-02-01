@@ -29,6 +29,7 @@ func UploadVideo(file *multipart.FileHeader) (url string, cover string) {
 	open, err := file.Open()
 	if err != nil {
 		zap.L().Sugar().Errorf("视频传输失败%v", err)
+		return
 	}
 	filename := file.Filename
 	videoName := fmt.Sprintf("video/%v/%v", time.Now().Format("2006/01/02"), filename)

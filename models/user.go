@@ -17,6 +17,13 @@ type User struct {
 	UpdateTime    time.Time `gorm:"column:update_time" redis:"-"`
 	IsDeleted     bool      `gorm:"column:is_deleted" redis:"-"`
 }
+type UserDTO struct {
+	Id            int    `json:"id"`
+	Name          string `json:"name"`
+	FollowCount   int    `json:"follow_count"`
+	FollowerCount int    `json:"follower_count"`
+	IsFollow      bool   `json:"is_follow"`
+}
 type UserDao struct {
 }
 
@@ -34,4 +41,8 @@ func (*UserDao) CreateUser(user *User) {
 	if err := dao.DB.Create(user).Error; err != nil {
 		zap.L().Sugar().Errorf("创建user失败user")
 	}
+}
+
+func (d UserDao) GetUserDTO(id int64) UserDTO {
+
 }

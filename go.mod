@@ -9,6 +9,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/spf13/viper v1.14.0
+	github.com/timandy/routine v1.1.0
 	go.uber.org/zap v1.21.0
 	gorm.io/driver/mysql v1.4.5
 	gorm.io/gorm v1.24.3
