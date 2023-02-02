@@ -2,33 +2,32 @@ package models
 
 import (
 	"TikTokApp/dao"
-	"go.uber.org/zap"
+	"errors"
 	"sync"
-	"time"
+
+	"go.uber.org/zap"
+	"gorm.io/gorm"
+	"gorm.io/plugin/soft_delete"
 )
 
 type User struct {
-	Id            int64     `gorm:"column:id" redis:"id"`
-	Name          string    `gorm:"column:name" redis:"name"`
-	Password      string    `gorm:"column:password" redis:"password"`
-	FollowCount   int64     `gorm:"column:follow_count" redis:"follow_count"`
-	FollowerCount int64     `gorm:"column:follower_count" redis:"follower_count"`
-	CreateTime    time.Time `gorm:"column:create_time" redis:"-"`
-	UpdateTime    time.Time `gorm:"column:update_time" redis:"-"`
-	IsDeleted     bool      `gorm:"column:is_deleted" redis:"-"`
+	Id            int64  `gorm:"column:id;primaryKey" redis:"id"`
+	Username      string `gorm:"column:username" redis:"username"`
+	Password      string `gorm:"column:password" redis:"password"`
+	FollowCount   int64  `gorm:"column:follow_count" redis:"follow_count"`
+	FollowerCount int64  `gorm:"column:follower_count" redis:"follower_count"`
+	// CreateTime    time.Time `gorm:"column:create_time" redis:"-"`
+	// UpdateTime    time.Time `gorm:"column:update_time" redis:"-"`
+	IsDeleted soft_delete.DeletedAt `gorm:"column:is_deleted;softDelete:flag" redis:"-"`
 }
-type UserDTO struct {
-	Id            int    `json:"id"`
-	Name          string `json:"name"`
-	FollowCount   int    `json:"follow_count"`
-	FollowerCount int    `json:"follower_count"`
-	IsFollow      bool   `json:"is_follow"`
-}
+
 type UserDao struct {
 }
 
-var userDao *UserDao
-var userOnce sync.Once
+var (
+	userDao  *UserDao
+	userOnce sync.Once
+)
 
 func NewUserDaoInstance() *UserDao {
 	userOnce.Do(
@@ -37,12 +36,45 @@ func NewUserDaoInstance() *UserDao {
 		})
 	return userDao
 }
-func (*UserDao) CreateUser(user *User) {
+
+// 添加用户
+func (*UserDao) CreateUser(user *User) error {
 	if err := dao.DB.Create(user).Error; err != nil {
-		zap.L().Sugar().Errorf("创建user失败user")
+		zap.L().Sugar().Errorf("创建用户失败")
+		return err
 	}
+	return nil
 }
 
-func (d UserDao) GetUserDTO(id int64) UserDTO {
+// 通过id获取用户信息
+func (*UserDao) GetUserById(id int64) (*User, error) {
+	user := &User{}
+	if err := dao.DB.First(user, id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			zap.L().Sugar().Errorf("未查询到用户信息")
+		} else {
+			zap.L().Sugar().Errorf("查询用户失败")
+		}
+		return user, err
+	}
+	return user, nil
+}
 
+// 通过username和password获取用户信息
+func (*UserDao) GetUserByUsernameAndPassword(username string, password string) (*User, error) {
+	user := &User{}
+	if err := dao.DB.Where("username = ? AND password = ?", username, password).First(user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			zap.L().Sugar().Errorf("未查询到用户信息")
+		} else {
+			zap.L().Sugar().Errorf("查询用户失败")
+		}
+		return user, err
+	}
+	return user, nil
+}
+
+// TODO尚未开发
+func (*UserDao) IsFollow(id int64) bool {
+	return false
 }
