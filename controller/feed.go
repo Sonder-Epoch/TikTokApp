@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"TikTokApp/models"
+	"TikTokApp/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -14,7 +14,7 @@ func Feed(c *gin.Context) {
 	if err != nil {
 		latestTime = time.Now().UnixMilli()
 	}
-	videoList, nextTime := models.NewVideoDaoInstance().FindVideoFeed(latestTime, 30)
+	videoList, nextTime := service.FindVideoFeed(latestTime, 30)
 	c.JSON(http.StatusOK, gin.H{
 		"status_code": 0,
 		"status_msg":  "string",

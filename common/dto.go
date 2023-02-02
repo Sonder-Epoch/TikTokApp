@@ -16,7 +16,7 @@ type VideoDTO struct {
 	Title         string  `json:"title"`
 }
 
-type Comment struct {
+type CommentDTO struct {
 	Id         int64   `json:"id,omitempty"`
 	User       UserDTO `json:"user"`
 	Content    string  `json:"content,omitempty"`

@@ -5,7 +5,7 @@ import (
 	"TikTokApp/models"
 )
 
-var userDao *models.UserDao = models.NewUserDaoInstance()
+var userDao = models.NewUserDaoInstance()
 
 func AddUser(user *models.User) error {
 	return userDao.CreateUser(user)
