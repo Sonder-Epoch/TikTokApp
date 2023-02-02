@@ -50,7 +50,11 @@ var Conf = initConfig()
 
 func initConfig() *Config {
 	conf := new(Config)
-	viper.SetConfigFile("./config/config.yaml")
+	//workDir, _ := os.Getwd()
+	//viper.SetConfigName("config")
+	//viper.SetConfigType("yaml")
+	//viper.AddConfigPath(workDir + "/config")
+	viper.SetConfigFile("E:\\code\\go\\TikTokApp\\config\\config.yaml")
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			panic(fmt.Errorf("配置文件不存在:%s", err))

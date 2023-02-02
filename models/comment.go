@@ -37,7 +37,7 @@ func (*CommentDao) CreateComment(comment *Comment) error {
 
 // GetCommentsByVideoId 根据视频id查询评论
 func (*CommentDao) GetCommentsByVideoId(vid int64) (commentList []Comment) {
-	dao.DB.Model(&Comment{}).Order("create_time").Scan(&commentList)
+	dao.DB.Model(&Comment{}).Where("vid=?", vid).Order("create_time").Find(&commentList)
 	return
 }
 

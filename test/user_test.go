@@ -9,6 +9,7 @@ import (
 
 func TestCreateUser(t *testing.T) {
 	dao.InitDB()
+	dao.DB.AutoMigrate(&models.User{})
 	userDao := models.NewUserDaoInstance()
 	user := &models.User{
 		Id:            1,
