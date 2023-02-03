@@ -7,7 +7,7 @@ import (
 )
 
 type CustomClaims struct {
-	Username string `json:"username"`
+	UserId int64 `json:"user_id"`
 	jwt.RegisteredClaims
 }
 
@@ -18,9 +18,9 @@ const TokenExpireDuration = time.Hour * 24
 var CustomSecret = []byte("关注永雏塔菲喵")
 
 // GenToken 生成JWT
-func GenToken(username string) (string, error) {
+func GenToken(userId int64) (string, error) {
 	claims := CustomClaims{
-		username,
+		userId,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(TokenExpireDuration)),
 			Issuer:    "永雏塔菲",

@@ -11,11 +11,14 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		token := c.Query("token")
 		claims, err := utils.ParseToken(token)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"code": 403, "msg": "登录体验更多"})
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"status_code": 403,
+				"status_msg":  "登录体验更多",
+			})
 			c.Abort()
 			return
 		}
-		c.Set("username", claims.Username)
+		c.Set("userId", claims.UserId)
 		c.Next()
 	}
 }
