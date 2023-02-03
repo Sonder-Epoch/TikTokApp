@@ -3,6 +3,7 @@ package models
 import (
 	"TikTokApp/dao"
 	"errors"
+	"fmt"
 	"sync"
 
 	"go.uber.org/zap"
@@ -75,6 +76,11 @@ func (*UserDao) GetUserByUsernameAndPassword(username string, password string) (
 }
 
 // TODO尚未开发
-func (*UserDao) IsFollow(id int64) bool {
-	return false
+func (*UserDao) IsFollow(uid, authorId int64) bool {
+	redisKey := fmt.Sprintf("userfollow:%d", authorId)
+	result, err := dao.REDIS.GetBit(dao.CTX, redisKey, uid).Result()
+	if err != nil {
+		return false
+	}
+	return result == 1
 }

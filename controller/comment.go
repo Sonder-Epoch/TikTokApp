@@ -14,10 +14,11 @@ func CommentAction(c *gin.Context) {
 	actionType := c.Query("action_type")
 	if actionType == "1" {
 		vid, _ := strconv.ParseInt(videoId, 0, 64)
+		commentText := c.Query("comment_text")
 		c.JSON(http.StatusOK, gin.H{
 			"status_code": 0,
 			"status_msg":  "string",
-			"comment":     deleteComment(c.Query("comment_text"), vid),
+			"comment":     deleteComment(commentText, vid),
 		})
 	} else if actionType == "2" {
 		commentId := c.Query("comment_id")

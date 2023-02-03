@@ -10,10 +10,10 @@ import (
 var videoDao = models.NewVideoDaoInstance()
 
 // Publish 发布视频
-func Publish(title string, file *multipart.FileHeader) {
+func Publish(title string, file *multipart.FileHeader) error {
 	url, cover := utils.UploadVideo(file)
 	//TODO 创建视频
-	videoDao.CreateVideo(&models.Video{Title: title, CoverUrl: cover, PlayUrl: url})
+	return videoDao.CreateVideo(&models.Video{Title: title, CoverUrl: cover, PlayUrl: url})
 }
 
 // FindVideoFeed 查询视频接口流
@@ -54,7 +54,7 @@ func createVideoDTO(video models.Video) common.VideoDTO {
 		CoverUrl:      video.CoverUrl,
 		FavoriteCount: video.FavouriteCount,
 		CommentCount:  video.CommentCount,
-		IsFavorite:    models.NewVideoDaoInstance().IsFavourite(video.Id, video.AuthorId),
+		IsFavorite:    videoDao.IsFavourite(common.GetUser(), video.Id),
 		Title:         video.Title,
 	}
 }

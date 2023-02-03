@@ -29,6 +29,6 @@ func GetUserDTO(user *models.User) *common.UserDTO {
 		Name:          user.Username,
 		FollowCount:   user.FollowCount,
 		FollowerCount: user.FollowerCount,
-		IsFollow:      userDao.IsFollow(1), //该接口尚未开发
+		IsFollow:      userDao.IsFollow(common.GetUser(), user.Id), //该接口尚未开发
 	}
 }
